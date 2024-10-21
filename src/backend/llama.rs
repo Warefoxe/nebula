@@ -882,13 +882,16 @@ impl<'a> LlamaContext {
 impl Context for LlamaContext {
     fn eval(&mut self, messages: Vec<Message>) -> Result<()> {
         let templated_message = self.model.apply_template(messages, None, true)?;
-        templated_message.into_iter().try_for_each(|m| {
-            match m {
-                Templated::Str(st) => self.eval_str(&st, false)?,
-                Templated::Image(st) => self.eval_image(&st)?,
-            }
-            Ok::<_, crate::error::Error>(())
-        })?;
+        templated_message
+            .into_iter()
+            .enumerate()
+            .try_for_each(|(i, m)| {
+                match m {
+                    Templated::Str(st) => self.eval_str(&st, i == 0)?,
+                    Templated::Image(st) => self.eval_image(&st)?,
+                }
+                Ok::<_, crate::error::Error>(())
+            })?;
         Ok(())
     }
 

@@ -95,7 +95,7 @@ impl LlamaContext {
         Ok(self.model.token_to_str_with_special(token, special)?)
     }
     pub fn token_to_piece(&self, token: &LlamaToken) -> crate::Result<String> {
-        self.token_to_piece_with_special(token, self.model.add_bos_token())
+        self.token_to_piece_with_special(token, false)
     }
 
     /// Gets the max number of tokens in a batch.

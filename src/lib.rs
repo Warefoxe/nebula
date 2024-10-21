@@ -1,4 +1,4 @@
-use actix_web::{dev::ServerHandle, web::Bytes};
+use actix_web::{dev::ServerHandle, middleware::Logger, web::Bytes};
 #[cfg(feature = "llama-http")]
 use actix_web::{App, HttpResponse, HttpServer, Responder};
 use options::{ContextOptions, Message, PredictOptions, TokenCallback};
@@ -181,6 +181,7 @@ pub struct CompletionRequest {
     temperature: f32,
     #[serde(default = "default_f32_1")]
     top_p: f32,
+    #[serde(alias = "model")]
     _model: String,
     messages: Vec<Message>,
 }
@@ -332,6 +333,7 @@ impl Server {
         let context_options = self.context_options.clone();
         let server = HttpServer::new(move || {
             App::new()
+                .wrap(Logger::new(r###"%a "%r" %s %b "%{Referer}i" "%{User-Agent}i" %T"###))
                 .app_data(actix_web::web::Data::new(AppState {
                     context_options: context_options.clone(),
                     model: mm.clone(),

@@ -130,6 +130,10 @@ impl LlamaModel {
         Ok(builder)
     }
 
+    pub fn add_bos_token(&self) -> bool {
+        unsafe { llama_cpp_sys::llama_add_bos_token(self.model.model.as_ptr()) }
+    }
+
     /// Convert a string to a Vector of tokens.
     ///
     /// # Errors

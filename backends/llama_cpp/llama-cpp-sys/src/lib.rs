@@ -614,6 +614,7 @@ get_and_load_from_llama!(
     llama_sampler_init_penalties(n_vocab: i32, special_eos_id: llama_token, linefeed_id: llama_token, penalty_last_n: i32, penalty_repeat: f32, penalty_freq: f32, penalty_present: f32, penalize_nl: bool, ignore_eos: bool) -> *mut llama_sampler,
     llama_model_meta_val_str(model: *const llama_model, key: *const ::std::os::raw::c_char, buf: *mut ::std::os::raw::c_char, bs: usize) -> i32,
     llama_token_is_eog(model: *const llama_model, id: i32) -> bool,
+    llama_add_bos_token(model: *const llama_model) -> bool,
     llama_sampler_init_top_k(k: i32) -> *mut llama_sampler,
     llama_sampler_init_top_p(p: f32, min_keep: usize) -> *mut llama_sampler,
     llama_sampler_init_min_p(p: f32, min_keep: usize) -> *mut llama_sampler,
